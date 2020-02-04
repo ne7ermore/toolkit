@@ -3,7 +3,6 @@ package authenticate
 import (
 	"crypto/md5"
 	"encoding/hex"
-	"strings"
 
 	"github.com/gofrs/uuid"
 )
@@ -13,10 +12,7 @@ func UUID() (string, error) {
 	if err != nil {
 		return "", err
 	}
-
-	md5 := Md5([]byte(tempUUID.String()))
-	upper := strings.ToUpper(md5)
-	return upper, nil
+	return Md5([]byte(tempUUID.String())), nil
 }
 
 func Md5(bs []byte) string {
