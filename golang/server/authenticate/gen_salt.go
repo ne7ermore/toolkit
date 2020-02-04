@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func getSalt(n int) string {
+func GenSalt(n int) string {
 	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	b := make([]byte, n)
 	for i := 0; i < n; i++ {
