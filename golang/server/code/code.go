@@ -28,6 +28,7 @@ const (
 	CodeWrongExpired
 	CodeIllegeOP
 	CodeParamInvalid
+	CodeTokenInvalid
 )
 
 var Messages = map[CodeCount]string{
@@ -45,6 +46,7 @@ var Messages = map[CodeCount]string{
 	CodeWrongExpired:  "更新会话失败",
 	CodeIllegeOP:      "非法操作",
 	CodeParamInvalid:  "参数非法",
+	CodeTokenInvalid:  "token非法",
 }
 
 type CodeInfo struct {
