@@ -5,12 +5,12 @@ import "github.com/gomodule/redigo/redis"
 type Cache interface {
 	Encode() string
 	Decode(reply string) error
-	RedisConn() redis.Conn
+	Connect() Connect
 	Exp() int64
 }
 
 func SetCache(c Cache, key string) error {
-	conn := c.RedisConn()
+	conn := c.Connect().Pool.Get()
 	if conn.Err() != nil {
 		return conn.Err()
 	}
@@ -21,7 +21,7 @@ func SetCache(c Cache, key string) error {
 }
 
 func GetCache(c Cache, key string) error {
-	conn := c.RedisConn()
+	conn := c.Connect().Pool.Get()
 	if conn.Err() != nil {
 		return conn.Err()
 	}
