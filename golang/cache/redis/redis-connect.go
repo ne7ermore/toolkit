@@ -6,10 +6,8 @@ import (
 	"github.com/gomodule/redigo/redis"
 )
 
-type redisConfig struct {
-	address, db, password                    string
-	wait                                     bool
-	timeout, maxActive, maxIdle, idleTimeout int
+type Connect struct {
+	Pool *redis.Pool
 }
 
 func dialFunc(timeout int, address, db, passwd string) func() (redis.Conn, error) {
@@ -40,12 +38,13 @@ func dialFunc(timeout int, address, db, passwd string) func() (redis.Conn, error
 	}
 }
 
-func InitRedisConnect(address, db, passwd string,
-	wait bool,
-	timeout, maxActive, maxIdle, idleTimeout int) *redis.Pool {
-	return &redis.Pool{
-		Dial:        dialFunc(timeout, address, db, passwd),
-		MaxIdle:     maxIdle,
-		MaxActive:   maxActive,
-		IdleTimeout: time.Duration(idleTimeout) * time.Second}
+func InitRedisConnect(address, db, passwd string, timeout, maxActive, maxIdle, idleTimeout int) *Connect {
+	return &Connect{
+		Pool: &redis.Pool{
+			Dial:        dialFunc(timeout, address, db, passwd),
+			MaxIdle:     maxIdle,
+			MaxActive:   maxActive,
+			IdleTimeout: time.Duration(idleTimeout) * time.Second,
+		},
+	}
 }
