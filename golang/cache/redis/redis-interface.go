@@ -5,7 +5,7 @@ import "github.com/gomodule/redigo/redis"
 type Cache interface {
 	Encode() string
 	Decode(reply string) error
-	Connect() Connect
+	Connect() *Connect
 	Exp() int64
 }
 
