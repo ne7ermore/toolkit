@@ -6,6 +6,8 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"net/url"
+	"strings"
 	"sync"
 	"time"
 	"unsafe"
@@ -43,6 +45,15 @@ func NewPostJsonReq(url string, params map[string]interface{}) (*http.Request, e
 		return nil, err
 	}
 	req.Header.Set("Content-Type", "application/json;charset=UTF-8")
+	return req, nil
+}
+
+func NewPostFormReq(url string, form url.Values) (*http.Request, error) {
+	req, err := http.NewRequest("POST", url, strings.NewReader(form.Encode()))
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	return req, nil
 }
 
