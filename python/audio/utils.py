@@ -25,25 +25,25 @@ def pySTFT(x, fft_length=1024, hop_length=256):
     
     return np.abs(result)     
 
-def get_mel_basis_transpose(sr=24000):
+def get_mel_bias_transpose(sr=24000):
     return mel(sr, 1024, fmin=90, fmax=7600, n_mels=80).T
 
-def amp_to_db(x, min_lebel_db=-100):
-    min_level = np.exp(min_lebel_db / 20 * np.log(10))
+def amp_to_db(x, min_level_db=-100):
+    min_level = np.exp(min_level_db / 20 * np.log(10))
     return 20 * np.log10(np.maximum(min_level, x))
 
-def normalize(S, bias=-16, min_lebel_db=-100):
-    return np.clip((S + bias - min_lebel_db) / -min_lebel_db, 0, 1)    
+def normalize(S, bias=-16, min_level_db=-100):
+    return np.clip((S + bias - min_level_db) / -min_level_db, 0, 1)    
 
-def denormalize(S, bias=-16, min_lebel_db=-100):
-    return ((np.clip(S, 0, 1) * -min_lebel_db) + min_lebel_db - bias) / 20
+def denormalize(S, bias=-16, min_level_db=-100):
+    return ((np.clip(S, 0, 1) * -min_level_db) + min_level_db - bias) / 20
 
 if __name__ == "__main__":
     sample_rate = 24000
     wav = "1.wav"
 
     b, a = butter_highpass(30, sample_rate)
-    mel_bias_t = get_mel_basis_transpose(sample_rate)
+    mel_bias_t = get_mel_bias_transpose(sample_rate)
     x, _ = librosa.load(wav, sr=sample_rate, mono=True)
     x = signal.filtfilt(b, a, x)
     D = pySTFT(x).T
